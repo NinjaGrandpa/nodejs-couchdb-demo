@@ -1,3 +1,6 @@
+const Joi = require("joi");
+const Boom = require("boom");
+
 let schemaNames = ['user'];
 let schemas = {};
 
@@ -15,7 +18,14 @@ function validate(doc, schema, cb) {
     if (!schema) {
         cb(new Error("Unknow schema"));
     } else {
-        Joi.validate(doc, schema, cb);
+        Joi.validate(doc, schema, function (err, value) {
+            if (err) {
+                Boom.wrap(err, 400);
+                cb(err);
+            } else {
+                cb(null, doc);
+            }
+        });
     }
 };
 
