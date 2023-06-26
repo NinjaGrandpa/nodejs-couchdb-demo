@@ -1,0 +1,15 @@
+{
+  "name": "nodejs-couchdb-demo",
+  "version": "1.0.0",
+  "description": "A simple customer database using Nodejs and CouchDb",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.2.4",
+    "nano": "^10.1.2"
+  }
+}
