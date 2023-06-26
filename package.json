@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.4",
+    "joi": "^17.9.2",
     "nano": "^10.1.2"
   }
 }
