@@ -1,8 +1,9 @@
-const Joi = require("joi");
+const Joi = require("@hapi/joi");
 const Boom = require("boom");
 
-let schemaNames = ['user'];
-let schemas = {};
+const schemaNames = ['user'];
+// const schemaNames = Joi.array().items(Joi.string().valid("user"));
+const schemas = {};
 
 schemaNames.forEach(function (schemaName) {
     schemas[schemaName] = require("./" + schemaName);
@@ -16,12 +17,12 @@ function validate(doc, schema, cb) {
     }
 
     if (!schema) {
-        cb(new Error("Unknow schema"));
+        cb(new Error("Unknown schema"));
     } else {
         Joi.validate(doc, schema, function (err, value) {
             if (err) {
-                Boom.wrap(err, 400);
-                cb(err);
+                const validationError = Boom.boomify(err, { statusCode: 400 });
+                cb(validationError);
             } else {
                 cb(null, doc);
             }
@@ -30,15 +31,15 @@ function validate(doc, schema, cb) {
 };
 
 exports.validating = function validating(schemaName, fn) {
-    let schema = schemas[schemaName];
+    const schema = schemas[schemaName];
     if (!schema) {
-        throw new Error("Unknow schema: " + schemaName);
+        throw new Error("Unknown schema: " + schemaName);
     }
 
     return function (doc, cb) {
         validate(doc, schema, function (err, doc) {
             if (err) {
-                cb(err)
+                cb(err);
             } else {
                 fn.call(null, doc, cb);
             }

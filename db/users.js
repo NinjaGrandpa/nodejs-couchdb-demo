@@ -16,5 +16,4 @@ exports.update = schemas.validating("user", updateUser);
 
 function updateUser(user, cb) {
     users.insert(user, errors.wrapNano(cb));
-
 }

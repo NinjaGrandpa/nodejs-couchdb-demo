@@ -1,6 +1,6 @@
-const Joi = require("joi");
+const Joi = require("@hapi/joi");
 
-module.export = Joi.object().keys({
+module.exports = Joi.object().keys({
     _rev: Joi.string(),
     _id: Joi.string(),
     email: Joi.string().email().required(),
