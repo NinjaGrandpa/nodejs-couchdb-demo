@@ -1,7 +1,7 @@
 const Joi = require("@hapi/joi");
 const Boom = require("boom");
 
-const schemaNames = ['user'];
+const schemaNames = ['user', 'message'];
 // const schemaNames = Joi.array().items(Joi.string().valid("user"));
 const schemas = {};
 
