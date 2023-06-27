@@ -42,4 +42,21 @@ function getMessagesFor(user, startKey, maxPerPage, cb) {
             }
         })
     );
-}
+};
+
+// Count messages for a given user
+exports.countFor = countMessagesFor;
+
+function countMessagesFor(user, cb) {
+    messages.view("to_count", "to_count", {
+        keys: [user],
+        group: true
+    }, error.wrapNano(function (err, result) {
+        if (err) {
+            cb(err);
+        } else {
+            cb(null, result.rows[0].value);
+        }
+    }));
+};
+

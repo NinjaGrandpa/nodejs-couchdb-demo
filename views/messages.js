@@ -24,13 +24,14 @@ exports.by_to_createdAt = {
 };
 
 // Counts the messages stored in a view
+// Uses the built in 'sum' function in CouchDb
 exports.to_count = {
     map: function (doc) {
         if (doc.to) {
             emit(doc.to, 1);
         }
     },
-    reduce: function (keys, value) {
+    reduce: function (keys, values) {
         return sum(values);
     }
 }
