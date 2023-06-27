@@ -19,8 +19,8 @@ function getMessagesFor(user, cb) {
     messages.view(
         "by_to_createdAt", "by_to_createdAt",
         {
-            startkey: [user, 0],
-            endkey: [user, Date.now()],
+            startkey: [user, Date.now()],
+            endkey: [user, 0],
             include_docs: true
         },
         errors.wrapNano(function (err, result) {
