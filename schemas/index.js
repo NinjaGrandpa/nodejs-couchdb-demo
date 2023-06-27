@@ -11,7 +11,7 @@ schemaNames.forEach(function (schemaName) {
 
 exports.validate = validate;
 
-function validate(doc, schema, cb) {
+function validate(doc, schema, op, cb) {
     if (typeof schema == "string") {
         schema = schemas[schema];
     }
@@ -19,25 +19,32 @@ function validate(doc, schema, cb) {
     if (!schema) {
         cb(new Error("Unknown schema"));
     } else {
-        Joi.validate(doc, schema, function (err, value) {
-            if (err) {
-                const validationError = Boom.boomify(err, { statusCode: 400 });
-                cb(validationError);
-            } else {
-                cb(null, doc);
-            }
-        });
+        schema = schema[op];
+
+        if (!schema) {
+            throw new Error("Undefined op " + op);
+
+        } else {
+            Joi.validate(doc, schema, function (err, value) {
+                if (err) {
+                    const validationError = Boom.boomify(err, { statusCode: 400 });
+                    cb(validationError);
+                } else {
+                    cb(null, doc);
+                }
+            });
+        }
     }
 };
 
-exports.validating = function validating(schemaName, fn) {
+exports.validating = function validating(schemaName, op, fn) {
     const schema = schemas[schemaName];
     if (!schema) {
         throw new Error("Unknown schema: " + schemaName);
     }
 
     return function (doc, cb) {
-        validate(doc, schema, function (err, doc) {
+        validate(doc, schema, op, function (err, doc) {
             if (err) {
                 cb(err);
             } else {

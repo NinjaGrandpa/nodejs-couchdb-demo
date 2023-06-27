@@ -1,5 +1,6 @@
 const schemas = require("../schemas");
 const errors = require("../errors");
+const diff = require("object-versions").diff;
 
 const users = require("./couchdb").use("users");
 
@@ -11,32 +12,48 @@ function createUser(user, cb) {
 };
 
 // Update user
-exports.update = schemas.validating("user", updateUser);
+exports.update = updateUser;
 
 function updateUser(user, cb) {
-    users.insert(user, errors.wrapNano(cb));
+    users.get(user._id, errors.wrapNano(function (err, currentuser) {
+        if (err) {
+            cb(err);
+        } else {
+            const userDiff = diff(currentuser, user);
+            schemas.validate(userDiff, "user", "update", function (err) {
+                if (err) {
+                    cb(err);
+                } else {
+                    users.insert(user, errors.wrapNano(cb));
+                }
+            });
+        }
+    }));
 }
 
-
-// Update user diff.
+// Update user diff
+// accepts an incomplete document, containing only the attributes changed
 exports.updateDiff = updateUserDiff;
 
 function updateUserDiff(userDiff, cb) {
-    merge();
+    schemas.validate(userDiff, "user", "update", function (err) {
+        if (err) {
+            cb(err);
+        } else {
+            merge();
+        }
+    });
 
+    // Gets the latest version of the document
+    // Applies the given changes
+    // Tries to save it into CouchDb, if it doesn't work it will try again
     function merge() {
         users.get(userDiff._id, errors.wrapNano(function (err, user) {
             if (err) {
                 cb(err);
             } else {
                 extend(user, userDiff);
-                schemas.validate(user, 'user', function (err) {
-                    if (err) {
-                        cb(err);
-                    } else {
-                        users.insert(user, errors.wrapNano(done));
-                    }
-                })
+                users.insert(user, errors.wrapNano(done));
             }
         }));
 
