@@ -17,7 +17,12 @@ exports.getFor = getMessagesFor;
 
 function getMessagesFor(user, cb) {
     messages.view(
-        "by_to", "by_to", { keys: [user], include_docs: true },
+        "by_to_createdAt", "by_to_createdAt",
+        {
+            startkeys: [user, 0],
+            endkey: [user, Date.now()],
+            include_docs: true
+        },
         errors.wrapNano(function (err, result) {
             if (err) {
                 cb(err);
