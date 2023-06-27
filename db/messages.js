@@ -33,7 +33,13 @@ function getMessagesFor(user, page, maxPerPage, cb) {
                 result = result.rows.map(function (row) {
                     return row.doc;
                 });
-                cb(null, result);
+
+                if (result.length > maxPerPage) {
+                    // remove the last record
+                    var next = result.pop().createdAt;
+                }
+
+                cb(null, result, next);
             }
         })
     );

@@ -6,17 +6,19 @@ if (!user) {
 }
 
 const start = Number(process.argv[3]) || 0;
-const maxPerPage = number(process.argv[4]) || 4;
+const maxPerPage = Number(process.argv[4]) || 4;
 
 const messages = require("../db/messages");
 
-messages.getFor(user, page, maxPerPage, function (err, messages) {
+messages.getFor(user, start, maxPerPage, function (err, messages, next) {
     if (err) {
         throw err;
     }
 
     console.log("Messages for user %s:", user);
     messages.forEach(printMessage);
+
+    console.log('\nNext message ID is %s', next);
 });
 
 function printMessage(message) {
