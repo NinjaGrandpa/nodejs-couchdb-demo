@@ -22,3 +22,15 @@ exports.by_to_createdAt = {
         }
     }
 };
+
+// Counts the messages stored in a view
+exports.to_count = {
+    map: function (doc) {
+        if (doc.to) {
+            emit(doc.to, 1);
+        }
+    },
+    reduce: function (keys, value) {
+        return sum(values);
+    }
+}
