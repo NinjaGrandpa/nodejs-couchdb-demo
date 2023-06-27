@@ -15,7 +15,7 @@ messages.countFor(user, function (err, count) {
         throw err;
     }
 
-    console.log('$s has a total of %d messages.', user, count);
+    console.log('%s has a total of %d messages.', user, count);
 
     messages.getFor(user, start, maxPerPage, function (err, messages, next) {
         if (err) {

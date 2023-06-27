@@ -11,7 +11,8 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\user_update_test.js"
+            "program": "${workspaceFolder}\\scripts\\messages_get.js",
+            "args": "johndoe@example.com"
         }
     ]
 }
