@@ -15,13 +15,16 @@ function createMessage(message, cb) {
 // Messages for a given user
 exports.getFor = getMessagesFor;
 
-function getMessagesFor(user, cb) {
+function getMessagesFor(user, page, maxPerPage, cb) {
     messages.view(
         "by_to_createdAt", "by_to_createdAt",
         {
             startkey: [user, Date.now()],
             endkey: [user, 0],
-            include_docs: true
+            descending: true,
+            include_docs: true,
+            limit: maxPerPage,
+            skip: page * maxPerPage
         },
         errors.wrapNano(function (err, result) {
             if (err) {
