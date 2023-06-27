@@ -10,17 +10,25 @@ const maxPerPage = Number(process.argv[4]) || 4;
 
 const messages = require("../db/messages");
 
-messages.getFor(user, start, maxPerPage, function (err, messages, next) {
+messages.countFor(user, function (err, count) {
     if (err) {
         throw err;
     }
 
-    console.log("Messages for user %s:", user);
-    messages.forEach(printMessage);
+    console.log('$s has a total of %d messages.', user, count);
 
-    console.log('\nNext message ID is %s', next);
+    messages.getFor(user, start, maxPerPage, function (err, messages, next) {
+        if (err) {
+            throw err;
+        }
+
+        console.log("Messages for user %s:", user);
+        messages.forEach(printMessage);
+
+        console.log('\nNext message ID is %s', next);
+    });
+
+    function printMessage(message) {
+        console.log(message);
+    }
 });
-
-function printMessage(message) {
-    console.log(message);
-}
