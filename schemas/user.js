@@ -18,12 +18,11 @@ module.exports = Joi.object().keys({
         ),
 });
 
-
 // Schema for updating users
 const updatedAttributes = {
     _id: Joi.string(),
     _rev: Joi.string(),
-    password: Joi.string().regex(/[a-zA-Zo-9]{3,30}/),
+    password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
     access_token: [Joi.string(), Joi.number()],
     birthyear: Joi.number().integer().min(1900).max((new Date()).getFullYear())
 };
