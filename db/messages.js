@@ -30,3 +30,12 @@ function getMessagesFor(user, cb) {
         })
     );
 }
+
+// Messages order by created date
+exports.by_to_createdAt = {
+    map: function (doc) {
+        if (doc.to && doc.createdAt) {
+            emit([doc.to, doc.createdAt], { _id: doc._id });
+        }
+    }
+};
