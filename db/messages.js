@@ -51,7 +51,7 @@ function countMessagesFor(user, cb) {
     messages.view("to_count", "to_count", {
         keys: [user],
         group: true
-    }, error.wrapNano(function (err, result) {
+    }, errors.wrapNano(function (err, result) {
         if (err) {
             cb(err);
         } else {
