@@ -1,4 +1,4 @@
-const initCouch = require("./init_couch");
+const initCouch = require("./db/init_couch");
 
 initCouch(function (err) {
     if (err) {
