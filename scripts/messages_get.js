@@ -5,7 +5,7 @@ if (!user) {
     return;
 }
 
-const start = Number(process.argv[3]) || 0;
+const start = Number(process.argv[3]) || Date.now();
 const maxPerPage = Number(process.argv[4]) || 4;
 
 const messages = require("../db/messages");
