@@ -19,7 +19,7 @@ function getMessagesFor(user, cb) {
     messages.view(
         "by_to_createdAt", "by_to_createdAt",
         {
-            startkeys: [user, 0],
+            startkey: [user, 0],
             endkey: [user, Date.now()],
             include_docs: true
         },
@@ -35,12 +35,3 @@ function getMessagesFor(user, cb) {
         })
     );
 }
-
-// Messages order by created date
-exports.by_to_createdAt = {
-    map: function (doc) {
-        if (doc.to && doc.createdAt) {
-            emit([doc.to, doc.createdAt], { _id: doc._id });
-        }
-    }
-};
