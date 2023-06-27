@@ -1,4 +1,4 @@
-const users = require("./db/users");
+const users = require("../db/users.js");
 
 // 1-fce67ce0286a6e6f08793dace491ec2a
 

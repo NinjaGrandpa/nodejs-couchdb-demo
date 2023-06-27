@@ -1,7 +1,7 @@
 const schemas = require("../schemas");
 const errors = require("../errors");
 
-const users = require("../couchdb").use("users");
+const users = require("./couchdb").use("users");
 
 // Create user
 exports.create = schemas.validating("user", createUser);
