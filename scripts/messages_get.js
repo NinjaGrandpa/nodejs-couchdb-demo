@@ -5,9 +5,12 @@ if (!user) {
     return;
 }
 
+const start = Number(process.argv[3]) || 0;
+const maxPerPage = number(process.argv[4]) || 4;
+
 const messages = require("../db/messages");
 
-messages.getFor(user, function (err, messages) {
+messages.getFor(user, page, maxPerPage, function (err, messages) {
     if (err) {
         throw err;
     }
